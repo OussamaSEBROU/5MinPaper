@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Configuration 
+# Configuration
 # IMPORTANT: Replace with your actual Google API key or use os.getenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=google_api_key)
@@ -135,13 +135,13 @@ def process_pdf(pdf_file):
     return file_id
 
 def save_chat_history(conversation_history):
-    current_time = datetime.now().strftime("%Y %m %d_%Hh%Mmin")
-    filename = f"{current_time}"
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{current_time}_chat_history.json"
     filepath = os.path.join(CHAT_HISTORY_DIR, filename)
-    
+
     with open(filepath, 'w') as f:
         json.dump(conversation_history, f, indent=4)
-    
+
     return filename
 
 def load_chat_history(filename):
@@ -159,13 +159,13 @@ def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
     pdf_display = f'''
     <div class="pdf-viewer">
-        <iframe 
-            src="data:application/pdf;base64,{base64_pdf}" 
-            width="100%" 
-            height="100%" 
+        <iframe
+            src="data:application/pdf;base64,{base64_pdf}"
+            width="100%"
+            height="100%"
             type="application/pdf"
         >
-            Your browser does not support PDF viewing. 
+            Your browser does not support PDF viewing.
             Please download the PDF to view it.
         </iframe>
     </div>
@@ -175,13 +175,13 @@ def display_pdf(pdf_file):
 def get_conversation_context(max_context_length=3):
     if not hasattr(st.session_state, 'conversation_history'):
         return ""
-    
+
     context_history = st.session_state.conversation_history[-max_context_length:]
     context_str = "\n".join([
         f"Previous Query: {item['query']}\nPrevious Response: {item['response']}"
         for item in context_history
     ])
-    
+
     return context_str
 
 def render_sidebar():
@@ -195,7 +195,7 @@ def render_sidebar():
             for key in list(st.session_state.keys()):
                 if key not in keys_to_preserve:
                     del st.session_state[key]
-            
+
             # Initialize empty conversation history for new chat
             st.session_state.conversation_history = []
             st.rerun()
@@ -229,22 +229,22 @@ def render_sidebar():
         # Chat History Management
         with st.expander("Chat History", expanded=False):
             chat_histories = list_chat_histories()
-            
+
             if chat_histories:
                 selected_history = st.selectbox(
                     "Select Previous Chat",
                     [""] + chat_histories,
                     format_func=lambda x: x.replace('_chat_history.json', '') if x else "Select a chat"
                 )
-                
+
                 col1, col2 = st.columns(2)
-                
+
                 with col1:
                     if selected_history and st.button("Load Chat", key="load_chat_btn"):
                         loaded_history = json.load(open(os.path.join(CHAT_HISTORY_DIR, selected_history)))
                         st.session_state.conversation_history = loaded_history
                         st.rerun()
-                
+
                 with col2:
                     if selected_history and st.button("Delete Chat", key="delete_chat_btn"):
                         os.remove(os.path.join(CHAT_HISTORY_DIR, selected_history))
@@ -255,7 +255,7 @@ def render_sidebar():
         # Help Section
         with st.expander("Help & Support", expanded=False):
             st.markdown("How to Use 5MinPaper")
-            
+
             help_sections = {
                 "Uploading Documents": [
                     "Click on 'Choose PDF' to upload your document",
@@ -273,7 +273,7 @@ def render_sidebar():
                 st.markdown(f"#### {section}")
                 for tip in tips:
                     st.markdown(f"- {tip}")
-            
+
             st.markdown("Troubleshooting")
             st.markdown("""
             - **No Text Extraction**: Ensure PDF is not scanned
@@ -295,23 +295,19 @@ def render_sidebar():
             - Fast and Precise Insights
 
             5MinPaper leverages advanced AI to transform how you interact with scientific papers and documents.
-            """)
 
-            st.markdown("""
             © 2024 5MinPaper Team. All rights reserved.
+
+            [Contact Us](mailto:oussama.sebrou@gmail.com?subject=5MinPaper%20Inquiry&body=Dear%205MinPaper%20Team,%0A%0AWe%20are%20writing%20to%20inquire%20about%20[your%20inquiry]%2C%20specifically%20[details%20of%20your%20inquiry].%0A%0A[Provide%20additional%20context%20and%20details%20here].%0A%0APlease%20let%20us%20know%20if%20you%20require%20any%20further%20information%20from%20our%20end.%0A%0ASincerely,%0A[Your%20Company%20Name]%0A[Your%20Name]%0A[Your%20Title]%0A[Your%20Phone%20Number]%0A[Your%20Email%20Address])
             """)
 
-            st.link_button(
-            "Contact Us",
-            "mailto:oussama.sebrou@gmail.com?subject=5MinPaper%20Inquiry&body=Dear%205MinPaper%20Team,%0A%0AWe%20are%20writing%20to%20inquire%20about%20[your%20inquiry]%2C%20specifically%20[details%20of%20your%20inquiry].%0A%0A[Provide%20additional%20context%20and%20details%20here].%0A%0APlease%20let%20us%20know%20if%20you%20require%20any%20further%20information%20from%20our%20end.%0A%0ASincerely,%0A[Your%20Company%20Name]%0A[Your%20Name]%0A[Your%20Title]%0A[Your%20Phone%20Number]%0A[Your%20Email%20Address]"
-            )
 def main():
     # Initialize conversation history as empty list if not exists
     if 'conversation_history' not in st.session_state:
         st.session_state.conversation_history = []
 
     st.markdown("<h1 style='font-size: 3.5rem;'>5MinPaper Chat</h1>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size: 1.5rem; color: #00b9c6;'>Unlock the Knowledg of your Scientific Paper with Large Language Models (LLMs) AI Technology. Ask insightful questions and receive precise, context-aware answers directly from your documents.</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size: 1.5rem; color: #00b9c6;'>Unlock the Knowledge of your Scientific Paper with Large Language Models (LLMs) AI Technology.</div>", unsafe_allow_html=True)
     st.write("")
 
     # Render Sidebar
@@ -350,7 +346,7 @@ def main():
                 model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
 
                 prompt_template = """
-                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, Develped by 5minPaper Team, Your responses are based solely on the provided text.
+                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, Your responses are based solely on the provided text.
                 Context from Previous Interactions:
                 {previous_context}
 
@@ -365,9 +361,8 @@ def main():
                 2. Analyze Document
                 3. Provide Precise, Contextual Response
                 4. Maintain Conversation Coherence
-                6. if the user not ask a translation yet, your answer should be in same language of question wriiten.
-                7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
-                8. Output Length: Your response should ideally be around 3000 tokens or more.
+                5. If the user has not asked for a translation yet, your answer should be in the same language as the question written.
+                6. Use professional mathematical and scientific notation
                 """
 
                 prompt = PromptTemplate(
@@ -398,7 +393,7 @@ def main():
                 response = chain(
                     {
                         "previous_context": previous_context,
-                        "input_documents": docs, 
+                        "input_documents": docs,
                         "question": user_query
                     },
                     return_only_outputs=True
@@ -424,7 +419,7 @@ def main():
     if st.session_state.conversation_history:
         if st.button("💾 Save Current Chat", key="save_chat_btn"):
             saved_filename = save_chat_history(st.session_state.conversation_history)
-            st.success(f"Chat saved {saved_filename}")
+            st.success(f"Chat saved as {saved_filename}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
