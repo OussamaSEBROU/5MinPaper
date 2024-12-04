@@ -304,6 +304,7 @@ def render_sidebar():
             st.link_button(
             "Contact Us",
             "mailto:oussama.sebrou@gmail.com?subject=5MinPaper%20Inquiry&body=Dear%205MinPaper%20Team,%0A%0AWe%20are%20writing%20to%20inquire%20about%20[your%20inquiry]%2C%20specifically%20[details%20of%20your%20inquiry].%0A%0A[Provide%20additional%20context%20and%20details%20here].%0A%0APlease%20let%20us%20know%20if%20you%20require%20any%20further%20information%20from%20our%20end.%0A%0ASincerely,%0A[Your%20Company%20Name]%0A[Your%20Name]%0A[Your%20Title]%0A[Your%20Phone%20Number]%0A[Your%20Email%20Address]"
+            )
 
 def main():
     # Initialize conversation history as empty list if not exists
