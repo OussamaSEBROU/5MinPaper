@@ -18,7 +18,7 @@ import io
 load_dotenv()
 
 # Configuration
-google_api_key = "AIzaSyA557kuj8o_kSfQSmtYBUKFoX_7dvj_HiQ"
+google_api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=google_api_key)
 os.environ["GOOGLE_API_KEY"] = google_api_key
 
