@@ -29,9 +29,14 @@ google_api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=google_api_key)
 os.environ["GOOGLE_API_KEY"] = google_api_key
 
-# Enhanced Configuration for Chat History
-CHAT_HISTORY_DIR = "/content/chat_histories"
-os.makedirs(CHAT_HISTORY_DIR, exist_ok=True)
+# Configuration -  Modified to use a writable directory
+APP_DATA_DIR = "app_data"  # Directory relative to your project root
+CHAT_HISTORY_DIR = os.path.join(APP_DATA_DIR, "chat_histories")
+
+# Ensure the app data directory exists; handle potential errors
+os.makedirs(APP_DATA_DIR, exist_ok=True)
+
+
 
 # Page Configuration with Mobile Responsiveness
 st.set_page_config(
