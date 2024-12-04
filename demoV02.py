@@ -8,6 +8,7 @@ import time
 import uuid
 import json
 from datetime import datetime
+import tempfile
 
 # Ensure necessary libraries are installed
 #!pip install -q streamlit PyPDF2 langchain google-generativeai python-dotenv
@@ -23,20 +24,24 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Dynamic Temporary Directory Configuration
+TEMP_DIR = tempfile.gettempdir()
+CHAT_HISTORY_DIR = os.path.join(TEMP_DIR, '5minpaper_chat_histories')
+FAISS_INDEX_DIR = os.path.join(TEMP_DIR, '5minpaper_faiss_indexes')
+
+# Ensure directories exist
+os.makedirs(CHAT_HISTORY_DIR, exist_ok=True)
+os.makedirs(FAISS_INDEX_DIR, exist_ok=True)
+
 # Configuration
-# IMPORTANT: Replace with your actual Google API key or use os.getenv()
-google_api_key = os.getenv("GOOGLE_API_KEY")
+# IMPORTANT: Use environment variable for API key
+google_api_key = os.getenv('GOOGLE_API_KEY', '')
+if not google_api_key:
+    st.error("Google API Key not found. Please set GOOGLE_API_KEY in environment variables.")
+    google_api_key = "PLACEHOLDER_KEY"  # Prevents immediate crash
+
 genai.configure(api_key=google_api_key)
 os.environ["GOOGLE_API_KEY"] = google_api_key
-
-# Configuration -  Modified to use a writable directory
-APP_DATA_DIR = "app_data"  # Directory relative to your project root
-CHAT_HISTORY_DIR = os.path.join(APP_DATA_DIR, "chat_histories")
-
-# Ensure the app data directory exists; handle potential errors
-os.makedirs(APP_DATA_DIR, exist_ok=True)
-
-
 
 # Page Configuration with Mobile Responsiveness
 st.set_page_config(
@@ -134,8 +139,10 @@ def process_pdf(pdf_file):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
 
+    # Use unique filename in FAISS_INDEX_DIR
     file_id = str(uuid.uuid4())
-    vector_store.save_local(f"/content/faiss_index_{file_id}")
+    index_path = os.path.join(FAISS_INDEX_DIR, f"faiss_index_{file_id}")
+    vector_store.save_local(index_path)
 
     return file_id
 
@@ -144,21 +151,32 @@ def save_chat_history(conversation_history):
     filename = f"{current_time}_chat_history.json"
     filepath = os.path.join(CHAT_HISTORY_DIR, filename)
 
-    with open(filepath, 'w') as f:
-        json.dump(conversation_history, f, indent=4)
-
-    return filename
+    try:
+        with open(filepath, 'w') as f:
+            json.dump(conversation_history, f, indent=4)
+        return filename
+    except Exception as e:
+        st.error(f"Error saving chat history: {e}")
+        return None
 
 def load_chat_history(filename):
     filepath = os.path.join(CHAT_HISTORY_DIR, filename)
-    with open(filepath, 'r') as f:
-        return json.load(f)
+    try:
+        with open(filepath, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        st.error(f"Error loading chat history: {e}")
+        return []
 
 def list_chat_histories():
-    return sorted(
-        [f for f in os.listdir(CHAT_HISTORY_DIR) if f.endswith('.json')],
-        reverse=True
-    )
+    try:
+        return sorted(
+            [f for f in os.listdir(CHAT_HISTORY_DIR) if f.endswith('.json')],
+            reverse=True
+        )
+    except Exception as e:
+        st.error(f"Error listing chat histories: {e}")
+        return []
 
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
@@ -338,7 +356,6 @@ def main():
         placeholder="Ask something about your document...",
         key="user_query_input"
     )
-
     # Insights Generation
     if st.button("Get Insights", key="insights_btn"):
         if not hasattr(st.session_state, 'pdf_processed') or not st.session_state.pdf_processed:
