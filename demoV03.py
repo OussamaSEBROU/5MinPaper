@@ -8,6 +8,7 @@ import time
 import uuid
 import json
 from datetime import datetime
+import tempfile  # Add this import
 
 # Ensure necessary libraries are installed
 #!pip install -q streamlit PyPDF2 langchain google-generativeai python-dotenv
@@ -24,14 +25,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
-# Configuration
-load_dotenv()
-# Use environment variables for API keys
-google_api_key = os.getenv("GOOGLE_API_KEY")
+# IMPORTANT: Replace with your actual Google API key or use os.getenv()
+google_api_key = "AIzaSyA557kuj8o_kSfQSmtYBUKFoX_7dvj_HiQ"
 genai.configure(api_key=google_api_key)
+os.environ["GOOGLE_API_KEY"] = google_api_key
 
-# Enhanced Configuration for Chat History
-CHAT_HISTORY_DIR = "/content/chat_histories"
+# Enhanced Configuration for Chat History using a temporary directory
+CHAT_HISTORY_DIR = os.path.join(tempfile.gettempdir(), "5minpaper_chat_histories")
 os.makedirs(CHAT_HISTORY_DIR, exist_ok=True)
 
 # Page Configuration with Mobile Responsiveness
@@ -365,7 +365,7 @@ def main():
                 5. If the user has not asked for a translation yet, your answer should be in the same language as the question written.
                 6. Use professional mathematical and scientific notation.
                 7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
-                8. Output Length: Your response should ideally be around 3000 tokens or more. 
+                8. Output Length: Your response should ideally be around 2000 tokens or more. 
                 """
 
                 prompt = PromptTemplate(
