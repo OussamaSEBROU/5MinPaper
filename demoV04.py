@@ -344,7 +344,7 @@ def main():
                 model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
 
                 prompt_template = """
-                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, Your responses are based solely on the provided text.
+                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI and devloped and train  by 5minPaper Team, always if any one ask u about ur self say 5minPaper be carful on that, Your responses are based solely on the provided text.
                 Context from Previous Interactions:
                 {previous_context}
 
