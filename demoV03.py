@@ -25,10 +25,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
-# IMPORTANT: Replace with your actual Google API key or use os.getenv()
-google_api_key = "AIzaSyA557kuj8o_kSfQSmtYBUKFoX_7dvj_HiQ"
+load_dotenv()
+# Use environment variables for API keys
+google_api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=google_api_key)
-os.environ["GOOGLE_API_KEY"] = google_api_key
 
 # Enhanced Configuration for Chat History using a temporary directory
 CHAT_HISTORY_DIR = os.path.join(tempfile.gettempdir(), "5minpaper_chat_histories")
@@ -308,7 +308,7 @@ def main():
         st.session_state.conversation_history = []
 
     st.markdown("<h1 style='font-size: 3.5rem;'>5MinPaper Chat</h1>", unsafe_allow_html=True)
-    st.markdown("<div style='font-size: 1.5rem; color: #00b9c6;'>Unlock the Knowledge of your Scientific Paper with Large Language Models (LLMs) AI Technology.</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size: 1.5rem; color: #00b9c6;'>Unlock the Knowledg of your Scientific Paper with Large Language Models (LLMs) AI Technology. Ask insightful questions and receive precise, context-aware answers directly from your documents.</div>", unsafe_allow_html=True)
     st.write("")
 
     # Render Sidebar
