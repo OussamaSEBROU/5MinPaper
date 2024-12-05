@@ -25,6 +25,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
+# IMPORTANT: Replace with your actual Google API key or use os.getenv()
 load_dotenv()
 # Use environment variables for API keys
 google_api_key = os.getenv("GOOGLE_API_KEY")
@@ -131,7 +132,13 @@ def process_pdf(pdf_file):
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
 
     file_id = str(uuid.uuid4())
-    vector_store.save_local(f"/content/faiss_index_{file_id}")
+
+    faiss_temp_dir = os.path.join(tempfile.gettempdir(), "faiss_indices")
+    os.makedirs(faiss_temp_dir, exist_ok=True)
+    full_path = os.path.join(faiss_temp_dir, f"faiss_index_{file_id}")
+    vector_store.save_local(full_path)
+
+    #vector_store.save_local(f"/content/faiss_index_{file_id}")
 
     return file_id
 
@@ -287,7 +294,7 @@ def render_sidebar():
             st.markdown("#### 5MinPaper - Intelligent Scientific Papers Analysis")
             st.markdown("This app was developed by Mr. Oussama SEBROU")
             st.markdown("""
-            **Version:** 2.0.0
+            **Version:** 2.5.1
 
             #### Features
             - AI-Powered PDF Analysis
@@ -365,7 +372,7 @@ def main():
                 5. If the user has not asked for a translation yet, your answer should be in the same language as the question written.
                 6. Use professional mathematical and scientific notation.
                 7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
-                8. Output Length: Your response should ideally be around 2000 tokens or more. 
+                8. Output Length: Your response should ideally be around 1000 tokens or more. 
                 """
 
                 prompt = PromptTemplate(
@@ -382,11 +389,21 @@ def main():
                 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
                 file_id = st.session_state.get('pdf_file_id', 'default')
+                faiss_temp_dir = os.path.join(tempfile.gettempdir(), "faiss_indices")
+                full_path = os.path.join(faiss_temp_dir, f"faiss_index_{file_id}")
                 new_db = FAISS.load_local(
-                    f"/content/faiss_index_{file_id}",
-                    embeddings,
-                    allow_dangerous_deserialization=True
+                  full_path,
+                  embeddings,
+                  allow_dangerous_deserialization=True
                 )
+
+
+
+                #new_db = FAISS.load_local(
+                #    f"/content/faiss_index_{file_id}",
+                #    embeddings,
+                #    allow_dangerous_deserialization=True
+                #)
 
                 docs = new_db.similarity_search(user_query)
 
