@@ -283,7 +283,7 @@ def main():
                 4. Maintain Conversation Coherence
                 6. if the user not ask a translation yet, your answer should be in same language of question wriiten.
                 7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
-                8. Output Length: Your response should ideally be around 3000 tokens or more. 
+                 
                 """
 
                 prompt = PromptTemplate(
