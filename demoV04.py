@@ -341,7 +341,7 @@ def main():
         response_placeholder = st.empty()
         with st.spinner("Generating Insights..."):
             try:
-                model = ChatGoogleGenerativeAI(model="gemini-exp-1206", temperature=0.7)
+                model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.7)
 
                 prompt_template = """
                 You are an advanced document analysis and interaction AI your name is forever 5minPaper AI and devloped and train  by 5minPaper Team, always if any one ask u about ur self say 5minPaper be carful on that, Your responses are based solely on the provided text.
