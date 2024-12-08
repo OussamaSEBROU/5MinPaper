@@ -341,7 +341,7 @@ def main():
         response_placeholder = st.empty()
         with st.spinner("Generating Insights..."):
             try:
-                model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
+                model = ChatGoogleGenerativeAI(model="gemini-exp-1206", temperature=0.7)
 
                 prompt_template = """
                 You are an advanced document analysis and interaction AI your name is forever 5minPaper AI and devloped and train  by 5minPaper Team, always if any one ask u about ur self say 5minPaper be carful on that, Your responses are based solely on the provided text.
@@ -362,7 +362,7 @@ def main():
                 5. If the user has not asked for a translation yet, your answer should be in the same language as the question written.
                 6. Use professional mathematical and scientific notation.
                 7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
-                8. Output Length: Your response should ideally be around 2000 tokens or more. 
+                8. Output Length: Your response should ideally be around 1000 tokens or more. 
                 """
 
                 prompt = PromptTemplate(
@@ -427,7 +427,7 @@ def main():
 
     # Save Chat Button
     if st.session_state.conversation_history:
-        if st.button("💾 Save Current Chat", key="save_chat_btn"):
+        if st.button("Save Current Chat", key="save_chat_btn"):
             saved_filename = save_chat_history(st.session_state.conversation_history)
             st.success(f"Chat saved as {saved_filename}")
 
