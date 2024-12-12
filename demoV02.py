@@ -262,8 +262,8 @@ def main():
         height=68,
         on_change=clear_text_area )
 
-    if user_query:
-        st.write(f"User query:\n{user_query}")
+    #if user_query:
+        #st.write(f"User query:\n{user_query}")
 
     if st.button("Get Insights", key="insights_btn"):
         if not hasattr(st.session_state, 'pdf_processed') or not st.session_state.pdf_processed:
