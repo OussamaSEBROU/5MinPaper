@@ -345,30 +345,6 @@ def main():
             except Exception as e:
                 st.error(f"Analysis Error: {e}")
     
-    
-    ###clear text
-    def clear_text_area():
-        """دالة رد نداء لمسح مربع الإدخال"""
-        st.session_state[user_query_key] = ""
-    user_query_key = "user_query_input"
-    
-    user_query = st.text_area(
-        "Your Question",
-        placeholder="Ask something about your document...",
-        key=user_query_key,
-        height=68,
-        on_change=clear_text_area )
-
-
-
-    
-    #def clear_text_area():
-        #"""دالة رد نداء لمسح مربع الإدخال"""
-        #st.session_state[user_query_key] = ""
-    #user_query_key = "user_query_input"
-
-
-    #####
     st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
