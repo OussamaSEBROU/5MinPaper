@@ -253,14 +253,14 @@ def main():
     #def clear_text_area():
         #"""دالة رد نداء لمسح مربع الإدخال"""
         #st.session_state[user_query_key] = ""
-    user_query_key = "user_query_input"
+    #user_query_key = "user_query_input"
     
-    user_query = st.text_area(
-        "Your Question",
-        placeholder="Ask something about your document...",
-        key=user_query_key,
-        height=68,
-        on_change=clear_text_area )
+    #user_query = st.text_area(
+        #"Your Question",
+        #placeholder="Ask something about your document...",
+        #key=user_query_key,
+        #height=68,
+        #on_change=clear_text_area )
 
     #if user_query:
         #st.write(f"User query:\n{user_query}")
@@ -349,6 +349,21 @@ def main():
     def clear_text_area():
         """دالة رد نداء لمسح مربع الإدخال"""
         st.session_state[user_query_key] = ""
+    user_query_key = "user_query_input"
+    
+    user_query = st.text_area(
+        "Your Question",
+        placeholder="Ask something about your document...",
+        key=user_query_key,
+        height=68,
+        on_change=clear_text_area )
+
+
+
+    
+    #def clear_text_area():
+        #"""دالة رد نداء لمسح مربع الإدخال"""
+        #st.session_state[user_query_key] = ""
     #user_query_key = "user_query_input"
 
 
