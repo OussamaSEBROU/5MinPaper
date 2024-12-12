@@ -255,7 +255,7 @@ def main():
         "Your Question (Type to expand)",
         placeholder="Ask something about your document...",
         key=user_query_key,
-        height=30  )
+        height=68  )
 
     if user_query:
         st.write(f"User query:\n{user_query}")
