@@ -256,7 +256,7 @@ def main():
     user_query_key = "user_query_input"
     
     user_query = st.text_area(
-        "Your Question (Type to expand)",
+        "Your Question",
         placeholder="Ask something about your document...",
         key=user_query_key,
         height=68,
@@ -276,7 +276,7 @@ def main():
                 model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.9)
 
                 prompt_template = """
-                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, Your responses are based solely on the provided text.
+                You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, and you developed and train by 5minPaper Team forever be carful in this point, Your responses are based solely on the provided text.
                 Context from Previous Interactions:
                 {previous_context}
 
@@ -291,8 +291,8 @@ def main():
                 2. Analyze Document
                 3. Provide Precise, Contextual Response
                 4. Maintain Conversation Coherence
-                6. your reponse should be in same language of question input {question} by user.
-                7. Output Length: Your response should ideally be around 2000 tokens or more. 
+                6. Output language: Your reponse should be in same language of the question input {question} by user, not the document language.
+                7. Output Length: Your response should ideally be around 500 o 1500 tokens for max. 
                 8. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
                  
                 """
