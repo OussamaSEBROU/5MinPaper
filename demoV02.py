@@ -250,10 +250,10 @@ def main():
             st.markdown(f"**A:** {interaction['response']}")
 
 
-    def clear_text_area():
-        """دالة رد نداء لمسح مربع الإدخال"""
-        st.session_state[user_query_key] = ""
-    user_query_key = "user_query_input"
+    #def clear_text_area():
+        #"""دالة رد نداء لمسح مربع الإدخال"""
+        #st.session_state[user_query_key] = ""
+    #user_query_key = "user_query_input"
     
     user_query = st.text_area(
         "Your Question",
@@ -343,7 +343,16 @@ def main():
 
             except Exception as e:
                 st.error(f"Analysis Error: {e}")
+    
+    
+    ###clear text
+    def clear_text_area():
+        """دالة رد نداء لمسح مربع الإدخال"""
+        st.session_state[user_query_key] = ""
+    user_query_key = "user_query_input"
 
+
+    #####
     st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
