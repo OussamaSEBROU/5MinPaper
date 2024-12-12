@@ -264,27 +264,6 @@ def main():
 
     if user_query:
         st.write(f"User query:\n{user_query}")
-    # لا نقوم بتعديل st.session_state هنا مباشرة
-
-    #user_query_key = "user_query_input" #نضع المفتاح في متغير لسهولة الاستخدام
-
-    #user_query = st.text_area(
-     #   "Your Question (Type to expand)",
-      #  placeholder="Ask something about your document...",
-       # key=user_query_key,
-        #height=68  )
-
-    #if user_query:
-     #   st.write(f"User query:\n{user_query}")
-      #  st.session_state[user_query_key] = ""
-       # st.experimental_rerun()
-
-    #user_query = st.text_area(
-     #   height=30,
-      #  "Your Question",
-       # placeholder="Ask something about your document...",
-        #key="user_query_input"
-    #)
 
     if st.button("Get Insights", key="insights_btn"):
         if not hasattr(st.session_state, 'pdf_processed') or not st.session_state.pdf_processed:
@@ -294,7 +273,7 @@ def main():
         response_placeholder = st.empty()
         with st.spinner("Generating Insights..."):
             try:
-                model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.7)
+                model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.9)
 
                 prompt_template = """
                 You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, Your responses are based solely on the provided text.
@@ -312,8 +291,9 @@ def main():
                 2. Analyze Document
                 3. Provide Precise, Contextual Response
                 4. Maintain Conversation Coherence
-                6. if the user not ask a translation yet, your answer should be in same language of question wriiten.
-                7. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
+                6. your answer should be in same language of question input by user.
+                7. Output Length: Your response should ideally be around 2000 tokens or more. 
+                8. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
                  
                 """
 
