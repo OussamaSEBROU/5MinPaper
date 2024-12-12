@@ -251,8 +251,8 @@ def main():
 
 
     def clear_text_area():
-    """دالة رد نداء لمسح مربع الإدخال"""
-    st.session_state[user_query_key] = ""
+        """دالة رد نداء لمسح مربع الإدخال"""
+        st.session_state[user_query_key] = ""
     user_query_key = "user_query_input"
     
     user_query = st.text_area(
