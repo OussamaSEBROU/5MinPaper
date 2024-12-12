@@ -249,18 +249,35 @@ def main():
             #st.markdown(f"**Q:** {interaction['query']}")
             st.markdown(f"**A:** {interaction['response']}")
 
-    user_query_key = "user_query_input" #نضع المفتاح في متغير لسهولة الاستخدام
 
+    def clear_text_area():
+    """دالة رد نداء لمسح مربع الإدخال"""
+    st.session_state[user_query_key] = ""
+    user_query_key = "user_query_input"
+    
     user_query = st.text_area(
         "Your Question (Type to expand)",
         placeholder="Ask something about your document...",
         key=user_query_key,
-        height=68  )
+        height=68,
+        on_change=clear_text_area )
 
     if user_query:
         st.write(f"User query:\n{user_query}")
-        st.session_state[user_query_key] = ""
-        st.experimental_rerun()
+    # لا نقوم بتعديل st.session_state هنا مباشرة
+
+    #user_query_key = "user_query_input" #نضع المفتاح في متغير لسهولة الاستخدام
+
+    #user_query = st.text_area(
+     #   "Your Question (Type to expand)",
+      #  placeholder="Ask something about your document...",
+       # key=user_query_key,
+        #height=68  )
+
+    #if user_query:
+     #   st.write(f"User query:\n{user_query}")
+      #  st.session_state[user_query_key] = ""
+       # st.experimental_rerun()
 
     #user_query = st.text_area(
      #   height=30,
