@@ -250,17 +250,18 @@ def main():
             st.markdown(f"**A:** {interaction['response']}")
 
 
-def clear_text_area():
-        """دالة رد نداء لمسح مربع الإدخال"""
-        st.session_state[user_query_key] = ""
-user_query_key = "user_query_input"
+    #def clear_text_area():
+        #"""دالة رد نداء لمسح مربع الإدخال"""
+        #st.session_state[user_query_key] = ""
+    user_query_key = "user_query_input"
     
-user_query = st.text_area(
+    user_query = st.text_area(
         "Your Question",
         placeholder="Ask something about your document...",
         key=user_query_key,
-        height=68,
-        on_change=clear_text_area )
+        height=68)
+        #on_change=clear_text_area )
+        #on_change=clear_text_area )
 
     #if user_query:
         #st.write(f"User query:\n{user_query}")
