@@ -291,7 +291,7 @@ def main():
                 2. Analyze Document
                 3. Provide Precise, Contextual Response
                 4. Maintain Conversation Coherence
-                6. your answer should be in same language of question input by user.
+                6. your reponse should be in same language of question input {question} by user.
                 7. Output Length: Your response should ideally be around 2000 tokens or more. 
                 8. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
                  
