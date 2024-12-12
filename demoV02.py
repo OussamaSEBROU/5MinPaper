@@ -249,7 +249,7 @@ def main():
             #st.markdown(f"**Q:** {interaction['query']}")
             st.markdown(f"**A:** {interaction['response']}")
 
-    user_query = st.text_input(
+    user_query = st.text_area(
         "Your Question",
         placeholder="Ask something about your document...",
         key="user_query_input"
