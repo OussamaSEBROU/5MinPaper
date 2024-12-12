@@ -249,12 +249,25 @@ def main():
             #st.markdown(f"**Q:** {interaction['query']}")
             st.markdown(f"**A:** {interaction['response']}")
 
+    user_query_key = "user_query_input" #نضع المفتاح في متغير لسهولة الاستخدام
+
     user_query = st.text_area(
-        height=30,
-        "Your Question",
+        "Your Question (Type to expand)",
         placeholder="Ask something about your document...",
-        key="user_query_input"
-    )
+        key=user_query_key,
+        height=30  )
+
+    if user_query:
+        st.write(f"User query:\n{user_query}")
+        st.session_state[user_query_key] = ""
+        st.experimental_rerun()
+
+    #user_query = st.text_area(
+     #   height=30,
+      #  "Your Question",
+       # placeholder="Ask something about your document...",
+        #key="user_query_input"
+    #)
 
     if st.button("Get Insights", key="insights_btn"):
         if not hasattr(st.session_state, 'pdf_processed') or not st.session_state.pdf_processed:
