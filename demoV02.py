@@ -200,15 +200,26 @@ def inject_js():
 
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
-    screen_width = st.session_state.get('screen_width', 1000) # Default large size to display the pdf
+    screen_width = st.session_state.get('screen_width', 1000)
+    
     if st.session_state.view_pdf_checkbox:
         if st.session_state.uploaded_pdf:
-            # Check if the screen is small (likely a mobile device)
-             if screen_width < 800:
-                 st.markdown(f'<a href="data:application/pdf;base64,{base64_pdf}" target="_blank" download="document.pdf">Download PDF</a>', unsafe_allow_html=True)
-             else:
-                 pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
-                 st.markdown(pdf_display, unsafe_allow_html=True)
+            # viewing PDF for phone 
+            pdf_display = f'''
+            <iframe 
+                src="data:application/pdf;base64,{base64_pdf}" 
+                width="100%" 
+                height="{600 if screen_width < 800 else 800}px" 
+                type="application/pdf"
+                style="border: none; 
+                       max-width: 100%; 
+                       overflow: auto; 
+                       display: block; 
+                       margin: 0 auto;">
+            </iframe>
+            '''
+            st.markdown(pdf_display, unsafe_allow_html=True)
+            
 
 def initialize_conversation_history():
     if 'conversation_history' not in st.session_state:
