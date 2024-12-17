@@ -200,23 +200,23 @@ def inject_js():
 
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
-    screen_width = st.session_state.get('screen_width', 1000)
     
     if st.session_state.view_pdf_checkbox:
         if st.session_state.uploaded_pdf:
-            # viewing PDF for phone 
+            # معالجة العرض للهواتف بشكل مختلف
             pdf_display = f'''
-            <iframe 
-                src="data:application/pdf;base64,{base64_pdf}" 
+            <object 
+                data="data:application/pdf;base64,{base64_pdf}" 
+                type="application/pdf" 
                 width="100%" 
-                height="{600 if screen_width < 800 else 800}px" 
-                type="application/pdf"
-                style="border: none; 
-                       max-width: 100%; 
-                       overflow: auto; 
-                       display: block; 
-                       margin: 0 auto;">
-            </iframe>
+                height="800px"
+                style="max-width: 100%; overflow: auto;">
+                <p>Your browser doesn't support PDF viewing. 
+                   <a href="data:application/pdf;base64,{base64_pdf}" download="document.pdf">
+                   Download PDF instead
+                   </a>
+                </p>
+            </object>
             '''
             st.markdown(pdf_display, unsafe_allow_html=True)
             
