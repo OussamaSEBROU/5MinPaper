@@ -14,6 +14,8 @@ import time
 import uuid
 import io
 
+# Load environment variables
+load_dotenv()
 
 # Configuration
 load_dotenv()
@@ -39,11 +41,6 @@ st.markdown("""
         --text-color: #2c3e50;
         --accent-color: #2ecc71;
     }
-
-    .chat-response { /* New Class */
-        font-size: 1.09rem; /* Adjust font size here */
-    }
-
     .pdf-viewer {
         width: 100%;
         height: 800px;
@@ -63,6 +60,9 @@ st.markdown("""
         border-radius: 10px;
         padding: 15px;
         margin-bottom: 10px;
+    }
+    .chat-response { /* New Class */
+        font-size: 1.2rem; /* Adjust font size here */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -179,18 +179,36 @@ def render_sidebar():
             [Contact Us](mailto:oussama.sebrou@gmail.com?subject=5MinPaper%20Inquiry&body=Dear%205MinPaper%20Team,%0A%0AWe%20are%20writing%20to%20inquire%20about%20[your%20inquiry]%2C%20specifically%20[details%20of%20your%20inquiry].%0A%0A[Provide%20additional%20context%20and%20details%20here].%0A%0APlease%20let%20us%20know%20if%20you%20require%20any%20further%20information%20from%20our%20end.%0A%0ASincerely,%0A[Your%20Company%20Name]%0A[Your%20Name]%0A[Your%20Title]%0A[Your%20Phone%20Number]%0A[Your%20Email%20Address])
             """)
 
+# Add javascript code to get the screen width
+def inject_js():
+    st.components.v1.html("""
+        <script>
+            function getScreenWidth() {
+                return window.innerWidth;
+            }
+
+            // Send the screen width to python as a message
+            window.addEventListener('load', () => {
+                window.parent.postMessage({type: 'screen_width', payload: getScreenWidth()}, "*");
+            });
+
+            window.addEventListener('resize', () => {
+                window.parent.postMessage({type: 'screen_width', payload: getScreenWidth()}, "*");
+            });
+        </script>
+    """, height=0)
+
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
+    screen_width = st.session_state.get('screen_width', 1000) # Default large size to display the pdf
     if st.session_state.view_pdf_checkbox:
         if st.session_state.uploaded_pdf:
             # Check if the screen is small (likely a mobile device)
-            if st.markdown('<div style="width:100%;overflow: hidden;display:block;"></div>',unsafe_allow_html=True).width < 800:
-                st.markdown(f'<a href="data:application/pdf;base64,{base64_pdf}" target="_blank" download="document.pdf">Download PDF</a>', unsafe_allow_html=True)
-
-            else:
-                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
-                st.markdown(pdf_display, unsafe_allow_html=True)
-    #st.markdown(pdf_display, unsafe_allow_html=True)
+             if screen_width < 800:
+                 st.markdown(f'<a href="data:application/pdf;base64,{base64_pdf}" target="_blank" download="document.pdf">Download PDF</a>', unsafe_allow_html=True)
+             else:
+                 pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
+                 st.markdown(pdf_display, unsafe_allow_html=True)
 
 def initialize_conversation_history():
     if 'conversation_history' not in st.session_state:
@@ -222,6 +240,8 @@ def get_conversation_context(max_context_length=3):
 def main():
     # Initialize conversation tracking
     initialize_conversation_history()
+    # Inject Javascript code to get the screen width
+    inject_js()
 
     st.markdown("<h1 style='font-size: 3.5rem;'>5MinPaper Chat</h1>", unsafe_allow_html=True)
     st.markdown("<div style='font-size: 1.5rem; color: #00b9c6;'>Unlock the Knowledg of your Scientific Paper with Large Language Models (LLMs) AI Technology. Ask insightful questions and receive precise, context-aware answers directly from your documents.</div>", unsafe_allow_html=True)
@@ -232,7 +252,7 @@ def main():
 
     # Display PDF if View PDF is checked
     if hasattr(st.session_state, 'uploaded_pdf'):
-        if st.session_state.view_pdf_checkbox:
+         if st.session_state.view_pdf_checkbox:
             display_pdf(st.session_state.uploaded_pdf)
 
     # Chat Interface
@@ -240,31 +260,24 @@ def main():
 
 
     # New Chat Button
-        # New Chat Button
     if st.button("New Chat", key="new_chat_btn"):
-            # Reset session state, preserving initial state
-            keys_to_preserve = ['uploaded_pdf', 'pdf_processed', 'pdf_file_id', 'pdf_base64']
-            for key in list(st.session_state.keys()):
-                if key not in keys_to_preserve:
-                    del st.session_state[key]
+        # Reset session state, preserving initial state
+        keys_to_preserve = ['uploaded_pdf', 'pdf_processed', 'pdf_file_id', 'pdf_base64']
+        for key in list(st.session_state.keys()):
+            if key not in keys_to_preserve:
+                del st.session_state[key]
 
-            # Initialize empty conversation history for new chat
-            st.session_state.conversation_history = []
-            st.rerun()
+        # Initialize empty conversation history for new chat
+        st.session_state.conversation_history = []
+        st.rerun()
+    
     # Display Conversation History
     if hasattr(st.session_state, 'conversation_history'):
         for interaction in st.session_state.conversation_history:
             st.markdown(f"<span style='font-size: 1.5rem; color: #00b9c6;'>**Q:** {interaction['query']}</span>", unsafe_allow_html=True)
-            #st.markdown(f"<span style='font-size:24px; color:green;'>**A:** {interaction['response']}</span>", unsafe_allow_html=True)
-
-            #st.markdown(f"**Q:** {interaction['query']}")
-            #st.markdown(f"**A:** {interaction['response']}")
+            # Apply the chat-response class to the answer.
             st.markdown(f"<div class='chat-response'>**A:** {interaction['response']}</div>", unsafe_allow_html=True)
 
-
-    #def clear_text_area():
-        #"""دالة رد نداء لمسح مربع الإدخال"""
-        #st.session_state[user_query_key] = ""
     user_query_key = "user_query_input"
     
     user_query = st.text_area(
@@ -272,11 +285,7 @@ def main():
         placeholder="Ask something about your document...",
         key=user_query_key,
         height=68)
-        #on_change=clear_text_area )
-        #on_change=clear_text_area )
 
-    #if user_query:
-        #st.write(f"User query:\n{user_query}")
 
     if st.button("Get Insights", key="insights_btn"):
         if not hasattr(st.session_state, 'pdf_processed') or not st.session_state.pdf_processed:
@@ -349,7 +358,6 @@ def main():
                 for char in response["output_text"]:
                     displayed_text += char
                     response_placeholder.markdown(f"<div class='chat-response'>{displayed_text}</div>", unsafe_allow_html=True)
-                    #response_placeholder.markdown(displayed_text)
                     time.sleep(0.006)
 
                 # Update conversation history
@@ -360,5 +368,11 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
 
+# Listen to the message sent by javascript
+def on_message(event):
+    if event.data.get('type') == 'screen_width':
+        st.session_state['screen_width'] = event.data.get('payload')
+
+st.session_state.on_message = on_message
 if __name__ == "__main__":
     main()
