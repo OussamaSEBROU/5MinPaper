@@ -14,8 +14,6 @@ import time
 import uuid
 import io
 
-# Load environment variables
-load_dotenv()
 
 # Configuration
 load_dotenv()
@@ -41,6 +39,11 @@ st.markdown("""
         --text-color: #2c3e50;
         --accent-color: #2ecc71;
     }
+
+    .chat-response { /* New Class */
+        font-size: 1.09rem; /* Adjust font size here */
+    }
+
     .pdf-viewer {
         width: 100%;
         height: 800px;
@@ -247,7 +250,8 @@ def main():
             #st.markdown(f"<span style='font-size:24px; color:green;'>**A:** {interaction['response']}</span>", unsafe_allow_html=True)
 
             #st.markdown(f"**Q:** {interaction['query']}")
-            st.markdown(f"**A:** {interaction['response']}")
+            #st.markdown(f"**A:** {interaction['response']}")
+            st.markdown(f"<div class='chat-response'>**A:** {interaction['response']}</div>", unsafe_allow_html=True)
 
 
     #def clear_text_area():
@@ -336,7 +340,8 @@ def main():
                 displayed_text = ""
                 for char in response["output_text"]:
                     displayed_text += char
-                    response_placeholder.markdown(displayed_text)
+                    response_placeholder.markdown(f"<div class='chat-response'>{displayed_text}</div>", unsafe_allow_html=True)
+                    #response_placeholder.markdown(displayed_text)
                     time.sleep(0.006)
 
                 # Update conversation history
