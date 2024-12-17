@@ -200,16 +200,20 @@ def inject_js():
 
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
+    screen_width = st.session_state.get('screen_width', 1000)
     
     if st.session_state.view_pdf_checkbox:
         if st.session_state.uploaded_pdf:
-            # معالجة العرض للهواتف بشكل مختلف
+            # تكييف الارتفاع والعرض بناءً على عرض الشاشة
+            height = "400px" if screen_width < 800 else "800px"
+            width = "100%"
+            
             pdf_display = f'''
             <object 
                 data="data:application/pdf;base64,{base64_pdf}" 
                 type="application/pdf" 
-                width="100%" 
-                height="800px"
+                width="{width}" 
+                height="{height}"
                 style="max-width: 100%; overflow: auto;">
                 <p>Your browser doesn't support PDF viewing. 
                    <a href="data:application/pdf;base64,{base64_pdf}" download="document.pdf">
