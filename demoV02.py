@@ -215,7 +215,7 @@ def display_pdf(pdf_file):
                 width="{width}" 
                 height="{height}"
                 style="max-width: 100%; overflow: auto;">
-                <p>Your browser doesn't support PDF viewing. 
+                <p>Your browser doesn't support PDF viewing, To enhance your experience : Open this App on a desktop . 
                    <a href="data:application/pdf;base64,{base64_pdf}" download="document.pdf">
                    Download PDF instead
                    </a>
