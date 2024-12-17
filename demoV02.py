@@ -181,8 +181,16 @@ def render_sidebar():
 
 def display_pdf(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    if st.session_state.view_pdf_checkbox:
+        if st.session_state.uploaded_pdf:
+            # Check if the screen is small (likely a mobile device)
+            if st.markdown('<div style="width:100%;overflow: hidden;display:block;"></div>',unsafe_allow_html=True).width < 800:
+                st.markdown(f'<a href="data:application/pdf;base64,{base64_pdf}" target="_blank" download="document.pdf">Download PDF</a>', unsafe_allow_html=True)
+
+            else:
+                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
+                st.markdown(pdf_display, unsafe_allow_html=True)
+    #st.markdown(pdf_display, unsafe_allow_html=True)
 
 def initialize_conversation_history():
     if 'conversation_history' not in st.session_state:
