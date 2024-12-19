@@ -62,7 +62,7 @@ st.markdown("""
         margin-bottom: 10px;
     }
     .chat-response { /* New Class */
-        font-size: 1.2rem; /* Adjust font size here */
+        font-size: 1.1rem; /* Adjust font size here */
     }
 </style>
 """, unsafe_allow_html=True)
