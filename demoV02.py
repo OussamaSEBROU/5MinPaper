@@ -62,7 +62,7 @@ st.markdown("""
         margin-bottom: 10px;
     }
     .chat-response { /* New Class */
-        font-size: 1.1rem; /* Adjust font size here */
+        font-size: 1.18rem; /* Adjust font size here */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -329,8 +329,12 @@ def main():
                 3. Provide Precise, Contextual Response
                 4. Maintain Conversation Coherence
                 6. Output language: Your reponse should be in same language of the question input {question} by user, not the document language.
-                7. Output Length: Your response should ideally be around 500 o 1500 tokens for max. 
-                8. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
+                7. Output Direction and Consistency:
+                        - If the primary output language is Arabic, write the response from right to left.
+                        - When the output contains a mix of Arabic and other languages, ensure the writing direction remains consistently right-to-left.** This means that even embedded non-Arabic words or numbers should be placed within the right-to-left flow.
+                        - Otherwise (if the primary output language is not Arabic), write the response from left to right.
+                8. Output Length: Your response should ideally be around 650 o 1500 tokens for max. 
+                9. Mathematical and Scientific Notation: For any mathematical formulas, scientific symbols, or code snippets, present them like professional LaTeX font formatting for professional and accurate representation.
                  
                 """
 
