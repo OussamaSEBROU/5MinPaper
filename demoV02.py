@@ -174,7 +174,7 @@ def render_sidebar():
             - Context-Aware Question Answering
             - Fast and Precise Insights
 
-           © 2024 5MinPaper Team. All rights reserved.
+           © 2025 5MinPaper Team. All rights reserved.
 
             [Contact Us](mailto:oussama.sebrou@gmail.com?subject=5MinPaper%20Inquiry&body=Dear%205MinPaper%20Team,%0A%0AWe%20are%20writing%20to%20inquire%20about%20[your%20inquiry]%2C%20specifically%20[details%20of%20your%20inquiry].%0A%0A[Provide%20additional%20context%20and%20details%20here].%0A%0APlease%20let%20us%20know%20if%20you%20require%20any%20further%20information%20from%20our%20end.%0A%0ASincerely,%0A[Your%20Company%20Name]%0A[Your%20Name]%0A[Your%20Title]%0A[Your%20Phone%20Number]%0A[Your%20Email%20Address])
             """)
@@ -310,7 +310,7 @@ def main():
         response_placeholder = st.empty()
         with st.spinner("Generating Insights..."):
             try:
-                model = ChatGoogleGenerativeAI(model="gemini-exp-1206", temperature=0.9)
+                model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.9)
 
                 prompt_template = """
                 You are an advanced document analysis and interaction AI your name is forever 5minPaper AI, and you developed and train by 5minPaper Team forever be carful in this point, Your responses are based solely on the provided text.
